@@ -26,6 +26,11 @@ app.use((req, res, next) => {
     next()
 })
 
+
+// 获取，更新用户信息的api接口
+const users = require('./router/user')
+app.use('/users', users)
+
 // 启动服务器
 app.listen(9090, () => {
     console.log('http://127.0.0.1:9090')
