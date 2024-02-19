@@ -26,10 +26,12 @@ app.use((req, res, next) => {
     next()
 })
 
-
 // 获取，更新用户信息的api接口
 const users = require('./router/user')
 app.use('/users', users)
+/* 获取角色 */
+const role = require('./router/role')
+app.use('/role', role)
 
 // 启动服务器
 app.listen(9090, () => {
