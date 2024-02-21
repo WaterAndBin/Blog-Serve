@@ -13,6 +13,12 @@ app.use(express.urlencoded({
     extended: false
 }))
 
+// 检查用户请求的地址和方法
+app.use((req, res, next) => {
+    console.log(`收到请求：${req.method} ${req.path}`)
+    next()
+})
+
 // 一定要在路由之前，封装全局错误信息
 app.use((req, res, next) => {
     // status 默认值为1 表示失败的情况
