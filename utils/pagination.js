@@ -1,6 +1,7 @@
 const knex = require('../mysql/index')
 
-exports.getRoleList = (req, res) => {
+/* 分页功能 */
+const pagination = (req, res) => {
     const { page = 1, pageSize = 10 } = req.query; // 获取当前页数和每页展示数量
     const startIndex = (page - 1) * pageSize; // 计算起始查询位置
 
