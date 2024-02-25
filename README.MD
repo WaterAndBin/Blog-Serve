@@ -8,6 +8,11 @@ jwt => 生成token
 bcryptjs => 
 joi => 数据验证
 
+host: '127.0.0.1', //数据库的 IP 地址
+user: 'root', //登录数据库的账号
+password: 'admin123', //登录数据库的密码
+database: 'my-first-mysql' //指定要操作哪个数据库
+
 2024/2/15
 1. 开始搭建后端
 

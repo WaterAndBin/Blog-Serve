@@ -45,26 +45,17 @@ app.use((req, res, next) => {
     next()
 })
 
-// 一定要在路由之前配置解析 token 的中间件
-const expressjwt = require('express-jwt')
-const config = require('./config')
-app.use(expressjwt({
-    secret: config.jwtSecretKey
-}).unless({
-    path: [/^\/api/]
-}))
-
 require("./router.js")(app);
 
 // 定义错误级别的中间件
-app.use((err, req, res, next) => {
-    // 验证失败导致的错误
-    if (err instanceof joi.ValidationError) res.error(err)
-    // 身份过期
-    if (err.name === 'UnauthorizedError') return res.error('身份过期')
-    // 未知的错误
-    res.cc(err)
-})
+// app.use((err, req, res, next) => {
+//     // 验证失败导致的错误
+//     if (err instanceof joi.ValidationError) res.error(err)
+//     // 身份过期
+//     if (err.name === 'UnauthorizedError') return res.error('身份过期')
+//     // 未知的错误
+//     res.cc(err)
+// })
 
 // 启动服务器
 app.listen(9090, () => {
