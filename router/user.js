@@ -9,9 +9,10 @@ const {
 } = require('../schema/user')
 
 // 导入用户路由处理函数对应的模块
-const users = require('../module/user')
+const user = require('../module/user')
 
 // 注册新用户
-router.post('/login', expressJoi(reg_login_schema), users.login)
+router.post('/login', expressJoi(reg_login_schema), user.login)
+router.post('/register', expressJoi(reg_login_schema), user.register)
 
 module.exports = router
