@@ -10,15 +10,33 @@ const faker = require('faker');
 // 登录的处理函数
 exports.login = (req, res) => {
     // 接收表单的数据
-    const userinfo = req.body
-    console.log(req)
-    console.log('成功了！')
+    const {
+        account,
+        password
+    } = req.body
 
-    res.send({
-        code: 200,
-        message: '这是一条成功的消息',
-        token: ''
-    })
+    knex('user_table')
+        .where('account', account).first()
+        .then(result => {
+            /* 解密密码 */
+            let decryptPassword = key.decrypt(result.password, 'utf8');
+            /* 判断密码是否相同 */
+            if (decryptPassword == password) {
+
+            }
+
+            res.send({
+                code: 200,
+                message: '查询成功！',
+                data: result
+            });
+        })
+        .catch(error => {
+            res.send({
+                code: 500,
+                message: error
+            });
+        });
 }
 
 // 注册的处理函数
