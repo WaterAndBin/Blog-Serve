@@ -36,15 +36,31 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
     // status 默认值为1 表示失败的情况
     // err的值，可能是一个错误对象，也可以是一个错误的描述字符串
-    res.error = (err, code = -1) => {
-        res.send({
-            code,
+    res.error = (code = -1, err) => {
+        res.status(code).send({
+            code: code,
             message: err instanceof Error ? err.message : err
-        })
+        });
+    }
+    /* 注册一个消息的回调函数 */
+    res.info = (code = 200, data, message) => {
+        if (data) {
+            res.send({
+                code,
+                data,
+                message
+            })
+        } else {
+            res.send({
+                code,
+                message
+            })
+        }
     }
     next()
 })
 
+/* 挂载路由 */
 require("./router.js")(app);
 
 // 定义错误级别的中间件

@@ -18,24 +18,27 @@ exports.login = (req, res) => {
     knex('user_table')
         .where('account', account).first()
         .then(result => {
+            /* 生成密钥 */
+            const key = new NodeRSA({
+                b: 512
+            });
+            console.log(result.password)
             /* 解密密码 */
             let decryptPassword = key.decrypt(result.password, 'utf8');
             /* 判断密码是否相同 */
             if (decryptPassword == password) {
-
+                res.send({
+                    code: 200,
+                    message: '查询成功！',
+                    data: result
+                });
+            } else {
+                res.error(201, '密码错误')
             }
-
-            res.send({
-                code: 200,
-                message: '查询成功！',
-                data: result
-            });
         })
         .catch(error => {
-            res.send({
-                code: 500,
-                message: error
-            });
+            console.log(error)
+            res.error(500, `${req.path} 数据库出错`)
         });
 }
 
@@ -50,39 +53,39 @@ exports.register = (req, res) => {
 
     /* 检查是否有重复的账号 */
     knex('user_table') // 请替换为你的表名  
-        .select('account', knex.raw('COUNT(*) as count'))
-        .groupBy('account')
-        .having('count', '>', 1)
+        .select('account')
+        .where('account', account)
         .then(rows => {
             // 如果 rows 有内容，说明有重复的 account  
             if (rows.length > 0) {
-                res.error('已存在相同的账号', 201)
+                res.error(201, '已存在相同的账号')
             } else {
                 /* 生成密钥 */
-                const key = new NodeRSA({ b: 512 });
+                const key = new NodeRSA({
+                    b: 512
+                });
                 /* 加密之后的密码 */
                 let encryptPassword = key.encrypt(password, 'base64');
                 /* 插入数据 */
                 knex('user_table')
                     .insert({
-                        user_name: faker.name.findName(),
+                        user_name: faker.name.findName(), // 用户姓名
                         account: account, // 账号
                         password: encryptPassword, // 密码
                         role_id: 1, // 角色id
-                        create_time: getFullTime()
+                        create_time: getFullTime() // 创建时间
                     })
                     .then(() => {
-                        res.send({
-                            code: 200,
-                            message: '注册成功',
-                        })
+                        res.info(200, '注册成功')
                     })
                     .catch(err => {
-                        console.error('插入数据出错:', err);
+                        console.log(err)
+                        res.error(500, `${req.path} 数据库出错`)
                     });
             }
         })
         .catch(err => {
-            console.error('查询出错:', err);
+            console.log(err)
+            res.error(500, `${req.path} 数据库出错`)
         });
 }
