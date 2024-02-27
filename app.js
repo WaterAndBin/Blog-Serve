@@ -1,5 +1,9 @@
 /* 导入express */
 const express = require('express')
+const { expressjwt } = require('express-jwt');
+const jwt = require('jsonwebtoken')
+const { jwtSecretKey } = require('./config')
+const joi = require('joi')
 
 /* 创建服务器的实例对象 */
 const app = express()
@@ -36,42 +40,47 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
     // status 默认值为1 表示失败的情况
     // err的值，可能是一个错误对象，也可以是一个错误的描述字符串
-    res.error = (code = -1, err) => {
-        res.status(code).send({
-            code: code,
-            message: err instanceof Error ? err.message : err
-        });
-    }
-    /* 注册一个消息的回调函数 */
-    res.info = (code = 200, data, message) => {
-        if (data) {
-            res.send({
-                code,
-                data,
-                message
-            })
+    res.error = (err, code = -1) => {
+        if (code == 500) {
+            res.status(code).send({
+                code: code,
+                message: err instanceof Error ? err.message : err
+            });
         } else {
             res.send({
-                code,
-                message
-            })
+                code: code,
+                message: err instanceof Error ? err.message : err
+            });
         }
     }
     next()
 })
 
+// app.use() 里面放的 expressJWT().unless()
+// 注册 token 验证中间件
+app.use(expressjwt({
+    // 解析口令, 需要和加密的时候一致
+    secret: jwtSecretKey,
+    // 加密方式: SHA256 加密方式在 express-jwt 里面叫做 HS256
+    algorithms: ['HS256']
+}).unless({
+    // 不需要验证 token 的路径标识符
+    path: ['/user/login', '/user/register']
+}))
+
+
 /* 挂载路由 */
 require("./router.js")(app);
 
 // 定义错误级别的中间件
-// app.use((err, req, res, next) => {
-//     // 验证失败导致的错误
-//     if (err instanceof joi.ValidationError) res.error(err)
-//     // 身份过期
-//     if (err.name === 'UnauthorizedError') return res.error('身份过期')
-//     // 未知的错误
-//     res.cc(err)
-// })
+app.use((err, req, res, next) => {
+    // 验证失败导致的错误
+    if (err instanceof joi.ValidationError) res.error(err, 401)
+    // 身份过期
+    if (err.name === 'UnauthorizedError') return res.error('登录过期', -1)
+    // 未知的错误
+    res.error('未知错误', 500)
+})
 
 // 启动服务器
 app.listen(9090, () => {

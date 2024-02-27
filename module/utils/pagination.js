@@ -24,12 +24,12 @@ const pagination = (req, res, schema, message) => {
                     // const totalPages = Math.ceil(total / pageSize); // 计算总页数
                     res.send({
                         code: 200,
-                        date: {
+                        data: {
                             currentPage: page,
                             pageSize,
                             total,
                             // totalPages,
-                            data,
+                            list: data,
                         },
                         message: `获取${message}成功`
                     });

@@ -7,10 +7,17 @@ const expressJoi = require('@escook/express-joi')
 const {
     pageRules
 } = require('../schema/common')
+const {
+    reg_insert_role, reg_update_role
+} = require('../schema/role')
 // 导入用户路由处理函数对应的模块
 const role = require('../module/role')
 
-// 注册新用户
+// 获取到角色列表
 router.post('/getRoleList', expressJoi(pageRules), role.getRoleList)
+/* 插入角色 */
+router.post('/addRole', expressJoi(reg_insert_role), role.addRole)
+/* 更新数据 */
+router.post('/updateRole', expressJoi(reg_update_role), role.updateRole)
 
 module.exports = router
