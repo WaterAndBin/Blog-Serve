@@ -2,4 +2,5 @@
 module.exports = (app) => {
     app.use('/user', require('./router/user'))
     app.use('/role', require('./router/role'))
+    app.use('/tabs', require('./router/tabs'))
 }

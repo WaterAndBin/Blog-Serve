@@ -9,7 +9,9 @@ const bcrypt = require('bcryptjs')
 /* 生成token */
 const jwt = require('jsonwebtoken')
 /* 拿到密钥 */
-const { jwtSecretKey } = require('../config')
+const {
+    jwtSecretKey
+} = require('../config')
 /* 导出需要插入插入的通用方法 */
 const insertData = require('./utils/insertData')
 
@@ -29,7 +31,11 @@ exports.login = (req, res) => {
                 /* 删掉密码 */
                 delete result.password
                 /* 生成一个 token 返回给前端 */
-                const token = jwt.sign({ ...result }, jwtSecretKey, { expiresIn: '1h' })
+                const token = jwt.sign({
+                    ...result
+                }, jwtSecretKey, {
+                    expiresIn: '1h'
+                })
 
                 res.send({
                     code: 200,
@@ -73,23 +79,6 @@ exports.register = (req, res) => {
                     create_time: getFullTime() // 创建时间
                 }
                 insertData(req, res, 'user_table', insertState, '注册成功')
-
-                /* 插入数据 */
-                // knex('user_table')
-                //     .insert({
-                //         user_name: faker.name.findName(), // 用户姓名
-                //         account: account, // 账号
-                //         password: bcrypt.hashSync(String(password), 10), // 加密密码
-                //         role_id: 1, // 角色id
-                //         create_time: getFullTime() // 创建时间
-                //     })
-                //     .then(() => {
-                //         res.info(200, '注册成功')
-                //     })
-                //     .catch(err => {
-                //         console.log(err)
-                //         res.error(`${req.path} 数据库出错`, 500)
-                //     });
             }
         })
         .catch(err => {
