@@ -10,7 +10,7 @@ const {
 const {
     reg_insert_tabs,
     reg_update_tabs
-} = require('../schema/role')
+} = require('../schema/tabs')
 // 导入用户路由处理函数对应的模块
 const tabs = require('../module/tabs')
 

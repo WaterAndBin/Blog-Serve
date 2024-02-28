@@ -23,6 +23,7 @@ exports.getTabsList = (req, res) => {
  * @param {*} res 
  */
 exports.addTabs = (req, res) => {
+    console.log('进来了')
     /* 获取到用户的id */
     const {
         id
@@ -33,6 +34,7 @@ exports.addTabs = (req, res) => {
     const {
         tab_name
     } = req.body;
+    console.log(tab_name)
     /* 创建一个需要插入的元素 */
     const insertState = {
         tab_name,
@@ -40,7 +42,7 @@ exports.addTabs = (req, res) => {
         created_time: fullTime
     }
     /* 调用公用的插入元素 */
-    insertData(req, res, 'role_table', insertState, '添加标签成功')
+    insertData(req, res, 'tabs_table', insertState, '添加标签成功')
 };
 
 /**
@@ -49,5 +51,5 @@ exports.addTabs = (req, res) => {
  * @param {*} res 
  */
 exports.updateTabs = (req, res) => {
-    updateData(req, res, 'tab_table', '修改标签数据成功')
+    updateData(req, res, 'tabs_table', '修改标签数据成功')
 };
