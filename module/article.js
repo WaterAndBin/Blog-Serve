@@ -1,3 +1,4 @@
+/* 文章 */
 const knex = require('../mysql/index')
 const insertData = require('./utils/insertData')
 /* 分页方法 */

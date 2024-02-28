@@ -1,3 +1,5 @@
+/* 菜单 */
+/* Permissions权限 */
 const knex = require('../mysql/index')
 const insertData = require('./utils/insertData')
 /* 分页方法 */

@@ -53,3 +53,21 @@ exports.addTabs = (req, res) => {
 exports.updateTabs = (req, res) => {
     updateData(req, res, 'tabs_table', '修改标签数据成功')
 };
+
+/**
+ * 获取用户列表
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getRoleList = (req, res) => {
+    pagination(req, res, 'user_table', '用户列表')
+};
+
+/**
+ * 修改用户
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.updateUser = (req, res) => {
+    updateData(req, res, 'role_table', '修改用户数据成功')
+};
