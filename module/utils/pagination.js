@@ -4,34 +4,34 @@ const knex = require('../../mysql/index')
  * @param {*} req 
  * @param {*} res 
  * @param {*} schema 
+ * 目前会将 is_deleted == 1 的 排除掉
  */
 const pagination = (req, res, schema, message) => {
     const originContainer = 'blog' // 具体是哪一张表
     const {
-        page = 1, pageSize = 10
-    } = req.query; // 获取当前页数和每页展示数量
+        page, pageSize
+    } = req.body; // 获取当前页数和每页展示数量
     const startIndex = (page - 1) * pageSize; // 计算起始查询位置
 
-    knex(`${originContainer}.${schema}`).count('* as total') // 查询数据总数
-        .then(([{
-            total
-        }]) => {
-            return knex(`blog.${schema}`)
+    knex(`${originContainer}.${schema}`)
+        .count('* as total') // 查询数据总数
+        .where('is_deleted', 0) // 添加筛选条件：is_deleted=0
+        .then(([{ total }]) => {
+            knex(`${originContainer}.${schema}`)
                 .select()
+                .where('is_deleted', 0) // 添加筛选条件：is_deleted=0
                 .limit(pageSize)
-                .offset(startIndex) // 查询当前页的数据
+                .offset(startIndex)
                 .then((data) => {
-                    // const totalPages = Math.ceil(total / pageSize); // 计算总页数
                     res.send({
                         code: 200,
                         data: {
                             currentPage: page,
                             pageSize,
                             total,
-                            // totalPages,
                             list: data,
                         },
-                        message: `获取${message}成功`
+                        message: `${message}`,
                     });
                 });
         })
