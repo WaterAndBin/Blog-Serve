@@ -6,6 +6,8 @@ const pagination = require('./utils/pagination')
 const getFullTime = require('../utils/time')
 /* 更新通用方法 */
 const updateData = require('./utils/updateData')
+/* 获取所有元素的通用方法 */
+const getAllData = require('./utils/getAllData')
 
 /**
  * 获取角色列表
@@ -57,15 +59,5 @@ exports.updateRole = (req, res) => {
  * @param {*} res 
  */
 exports.getAllRole = (req, res) => {
-    knex(`role_table`)
-        .select()
-        .where('is_deleted', 0) // 添加筛选条件：is_deleted=0
-        .where('status', 0) // 添加筛选条件：is_deleted=0
-        .then((data) => {
-            res.send({
-                code: 200,
-                data,
-                message: `获取所有角色成功`,
-            });
-        });
+    getAllData(req, res, 'role_table', '获取所有角色成功')
 };
