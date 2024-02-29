@@ -79,6 +79,7 @@ app.use((err, req, res, next) => {
     // 身份过期
     if (err.name === 'UnauthorizedError') return res.error('登录过期', -1)
     // 未知的错误
+    console.log(err)
     res.error('未知错误', 500)
 })
 

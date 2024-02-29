@@ -6,7 +6,7 @@ const knex = require('../../mysql/index')
  * @param {*} schema 
  * 目前会将 is_deleted == 1 的 排除掉
  */
-const pagination = (req, res, schema, message) => {
+const pagination = (req, res, schema, message, condition) => {
     const originContainer = 'blog' // 具体是哪一张表
     const {
         page, pageSize
@@ -18,7 +18,7 @@ const pagination = (req, res, schema, message) => {
         .where('is_deleted', 0) // 添加筛选条件：is_deleted=0
         .then(([{ total }]) => {
             knex(`${originContainer}.${schema}`)
-                .select()
+                .select(condition ? condition : '')
                 .where('is_deleted', 0) // 添加筛选条件：is_deleted=0
                 .limit(pageSize)
                 .offset(startIndex)
@@ -31,7 +31,7 @@ const pagination = (req, res, schema, message) => {
                             total,
                             list: data,
                         },
-                        message: `${message}`,
+                        message: `获取${message}成功`,
                     });
                 });
         })

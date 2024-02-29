@@ -5,14 +5,20 @@ const router = express.Router()
 const expressJoi = require('@escook/express-joi')
 // 2.导入需要验证规则对象
 const {
-    reg_login_schema
+    reg_login_schema,
+    res_user_update
 } = require('../schema/user')
 
 // 导入用户路由处理函数对应的模块
 const user = require('../module/user')
 
-// 注册新用户
+/* 登录 */
 router.post('/login', expressJoi(reg_login_schema), user.login)
+/* 注册 */
 router.post('/register', expressJoi(reg_login_schema), user.register)
+/* 获取用户列表 */
+router.post('/getUserList', expressJoi(reg_login_schema), user.getUserList)
+/* 获取用户列表 */
+router.post('/updateUser', expressJoi(res_user_update), user.updateUser)
 
 module.exports = router

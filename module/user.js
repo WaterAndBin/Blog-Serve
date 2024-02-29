@@ -14,6 +14,10 @@ const {
 } = require('../config')
 /* 导出需要插入插入的通用方法 */
 const insertData = require('./utils/insertData')
+/* 分页方法 */
+const pagination = require('./utils/pagination')
+/* 更新通用方法 */
+const updateData = require('./utils/updateData')
 
 // 登录的处理函数
 exports.login = (req, res) => {
@@ -76,7 +80,7 @@ exports.register = (req, res) => {
                     account: account, // 账号
                     password: bcrypt.hashSync(String(password), 10), // 加密密码
                     role_id: 1, // 角色id
-                    create_time: getFullTime() // 创建时间
+                    created_time: getFullTime() // 创建时间
                 }
                 insertData(req, res, 'user_table', insertState, '注册成功')
             }
@@ -86,3 +90,38 @@ exports.register = (req, res) => {
             res.error(`${req.path} 数据库出错`, 500)
         });
 }
+
+/**
+ * 获取用户列表
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getUserList = (req, res) => {
+    /* 搜索条件 */
+    let condition = ['id', 'user_name', 'role_id', 'account', 'created_time', 'is_deleted', 'status']
+    pagination(req, res, 'user_table', '用户列表', condition)
+};
+
+/**
+ * 修改用户
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.updateUser = (req, res) => {
+    knex(`blog.user_table`) // 'roles' 是你想要更新的表
+        .where({ id: req.body.id }) // 使用where子句指定需要更新的记录，这里假设按照id来更新
+        .update({ ...req.body }) // newRoleData 包含了你想要更新的字段和它们的新值
+        .then((result) => {
+            res.send({
+                code: 200,
+                massage: '更新用户数据成功'
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).send({
+                code: 500,
+                message: '服务器错误',
+            });
+        });
+};

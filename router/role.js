@@ -19,5 +19,7 @@ router.post('/getRoleList', expressJoi(pageRules), role.getRoleList)
 router.post('/addRole', expressJoi(reg_insert_role), role.addRole)
 /* 更新数据 */
 router.post('/updateRole', expressJoi(reg_update_role), role.updateRole)
+/* 获取到所有角色 */
+router.get('/getAllRole', role.getAllRole)
 
 module.exports = router

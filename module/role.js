@@ -57,5 +57,15 @@ exports.updateRole = (req, res) => {
  * @param {*} res 
  */
 exports.getAllRole = (req, res) => {
-    updateData(req, res, 'role_table', '修改角色数据成功')
+    knex(`role_table`)
+        .select()
+        .where('is_deleted', 0) // 添加筛选条件：is_deleted=0
+        .where('status', 0) // 添加筛选条件：is_deleted=0
+        .then((data) => {
+            res.send({
+                code: 200,
+                data,
+                message: `获取所有角色成功`,
+            });
+        });
 };
