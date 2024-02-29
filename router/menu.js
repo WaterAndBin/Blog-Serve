@@ -16,5 +16,7 @@ const menu = require('../module/menu')
 router.get('/getMenu', menu.getMenu)
 /* 添加菜单 */
 router.post('/addMenu', menu.addMenu)
+/* 修改菜单数据 */
+router.post('/updateMenu', menu.updateMenu)
 
 module.exports = router

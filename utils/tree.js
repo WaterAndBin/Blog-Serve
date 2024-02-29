@@ -7,10 +7,16 @@ const getTree = (data) => {
 
     /* 利用for循环，先来看看谁的父节点为0 */
     for (let i = 0; i < data.length; i++) {
-        if (data.menu_parent == 0) {
-            result.push({ ...data[i], children: [] })
+        if (data[i].menu_parent == 0) {
+            result.push({
+                ...data[i],
+                children: []
+            })
         } else {
-            bucket.push({ ...data[i], children: [] })
+            bucket.push({
+                ...data[i],
+                children: []
+            })
         }
     }
 
@@ -23,6 +29,7 @@ const getTree = (data) => {
         }
     }
 
+    // console.log(result)
     return result
 }
 module.exports = getTree
