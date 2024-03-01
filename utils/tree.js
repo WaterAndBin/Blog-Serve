@@ -1,35 +1,37 @@
 /* 获得树状数据 */
-const getTree = (data) => {
-    /* 利用堆栈 */
-    let bucket = []
-    /* 得到的结果 */
-    let result = []
+const getTree = (arrs) => {
+    /* 利用递归来循环 */
+    const result = arrs.filter(item => item.menu_parent == 0)
 
-    /* 利用for循环，先来看看谁的父节点为0 */
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].menu_parent == 0) {
-            result.push({
-                ...data[i],
-                children: []
-            })
-        } else {
-            bucket.push({
-                ...data[i],
-                children: []
-            })
-        }
-    }
+    function insertChildren(nodes) {
+        /* 临时变量，存储被循环到的数据 */
+        let timerData = null;
+        for (let i = 0; i < nodes.length; i++) {
+            /* 给传进来的节点进行children初始化 */
+            nodes[i].children = nodes[i].children || []
 
-    /* 来判断孩子节点 */
-    for (let i = 0; i < bucket.length; i++) {
-        for (let j = 0; j < result.length; j++) {
-            if (bucket[i].menu_parent == result[j].id) {
-                result[j].children.push(bucket[i])
+            for (let j = 0; j < arrs.length; j++) {
+                /* 对传进来的数据进行children的推入和判断 */
+                if (arrs[j].menu_parent == nodes[i].id) {
+                    nodes[i].children.push(arrs[j])
+                    timerData = timerData || {}
+                    timerData[arrs[j].id] = arrs[j]
+                }
             }
         }
+        /* 判断临时数据是否存在 */
+        if (timerData) {
+            let arr = []; //定义数组
+            for (var i in timerData) {
+                arr.push(timerData[i]);
+            }
+            /* 递归循环 */
+            insertChildren(arr)
+        }
     }
 
-    // console.log(result)
+    insertChildren(result)
+
     return result
 }
 module.exports = getTree

@@ -8,13 +8,32 @@ const pagination = require('./utils/pagination')
 const getFullTime = require('../utils/time')
 /* 更新通用方法 */
 const updateData = require('./utils/updateData')
-/* 获取所有元素的通用方法 */
-const getAllData = require('./utils/getAllData')
 /* 获取到树状 */
 const getTree = require('../utils/tree')
 
 /**
  * 获取所有的菜单元素
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getAllMenu = (req, res) => {
+    knex(`blog.menu_table`)
+        .select()
+        .where('is_deleted', 0) // 添加筛选条件：is_deleted=0
+        .then((data) => {
+            let treeData = getTree(data)
+            // console.log(treeData)
+
+            res.send({
+                code: 200,
+                data: treeData,
+                message: '获取所有菜单成功',
+            });
+        });
+};
+
+/**
+ * 获取菜单
  * @param {*} req 
  * @param {*} res 
  */

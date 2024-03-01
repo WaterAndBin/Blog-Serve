@@ -31,6 +31,7 @@ const updateData = (req, res, schema, message) => {
             })
         })
         .catch(err => {
+            console.log(err)
             res.status(500).send({
                 code: 500,
                 message: '服务器错误',

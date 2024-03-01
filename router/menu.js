@@ -12,7 +12,9 @@ const {
 // 导入用户路由处理函数对应的模块
 const menu = require('../module/menu')
 
-/* 获取菜单列表 */
+/* 获取所有的菜单数据，包括 status == 1 */
+router.get('/getAllMenu', menu.getAllMenu)
+/* 获取菜单数据，一般都是渲染在侧边栏才调用 */
 router.get('/getMenu', menu.getMenu)
 /* 添加菜单 */
 router.post('/addMenu', menu.addMenu)
