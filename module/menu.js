@@ -92,3 +92,26 @@ exports.addMenu = (req, res) => {
 exports.updateMenu = (req, res) => {
     updateData(req, res, 'menu_table', '修改菜单成功')
 };
+
+/**
+ * 批量查询路由
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.searchMenu = (req, res) => {
+    knex('menu_table')
+        .whereIn('id', ids) // 通过一组 id 进行批量查询
+        .andWhere('status', 0) // 判断状态为 0
+        .andWhere('is_deleted', 0) // 判断未被删除
+        .then(data => {
+            let treeData = getTree(data)
+            res.send({
+                code: 200,
+                data: treeData,
+                message: '获取所有菜单成功',
+            });
+        })
+        .catch(error => {
+            console.error(error);
+        });
+};
