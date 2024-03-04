@@ -8,6 +8,8 @@ const getFullTime = require('../utils/time')
 const updateData = require('./utils/updateData')
 /* 获取所有元素的通用方法 */
 const getAllData = require('./utils/getAllData')
+/* 获取到创建权限 */
+const { createMenuPermissions } = require('./permissions')
 
 /**
  * 获取角色列表
@@ -41,7 +43,7 @@ exports.addRole = (req, res) => {
         created_time: fullTime
     }
     /* 调用公用的插入元素 */
-    insertData(req, res, 'role_table', insertState, '添加新角色成功')
+    insertData(req, res, 'role_table', insertState, '添加新角色成功', createMenuPermissions)
 };
 
 /**

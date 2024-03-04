@@ -72,6 +72,14 @@ app.use(expressjwt({
 /* 挂载路由 */
 require("./router.js")(app);
 
+/* 使用 express-list-endpoints 库 */
+// const listEndpoints = require('express-list-endpoints');
+/* 在所有路由都被定义之后调用它，可以获取到所有路由的接口 */
+// const endpoints = listEndpoints(app);
+// 现在，endpoints 变量包含所有路由的列表
+// console.log(endpoints);
+
+
 // 定义错误级别的中间件
 app.use((err, req, res, next) => {
     // 验证失败导致的错误

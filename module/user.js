@@ -79,7 +79,7 @@ exports.register = (req, res) => {
                     user_name: faker.name.findName(), // 用户姓名
                     account: account, // 账号
                     password: bcrypt.hashSync(String(password), 10), // 加密密码
-                    role_id: 1, // 角色id
+                    role_id: 12, // 角色id
                     created_time: getFullTime() // 创建时间
                 }
                 insertData(req, res, 'user_table', insertState, '注册成功')
