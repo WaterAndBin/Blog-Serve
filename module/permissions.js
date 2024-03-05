@@ -72,3 +72,58 @@ exports.createMenuPermissions = (req, res) => {
             console.error('查询过程中出错:', error);
         });
 };
+
+/**
+ * 获取菜单权限列表
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getMenuPermissionsList = (req, res) => {
+    const { page, pageSize } = req.body;
+    const startIndex = (page - 1) * pageSize;
+
+    // 查询总记录数
+    knex('blog.menu_permissions')
+        .join('role_table', 'menu_permissions.role_id', 'role_table.id')
+        .where('role_table.is_deleted', 0)
+        .count('* as total')
+        .then((totalRows) => {
+            const total = totalRows[0].total;
+
+            // 查询数据列表
+            knex('blog.menu_permissions')
+                .join('role_table', 'menu_permissions.role_id', 'role_table.id')
+                .where('role_table.is_deleted', 0)
+                .select('menu_permissions.*')
+                .limit(pageSize)
+                .offset(startIndex)
+                .then((data) => {
+                    console.log(data)
+
+                    res.send({
+                        code: 200,
+                        data: {
+                            currentPage: page,
+                            pageSize,
+                            total,
+                            list: data,
+                        },
+                        message: '获取列表成功',
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                    res.status(500).send({
+                        code: 500,
+                        message: '服务器错误',
+                    });
+                });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send({
+                code: 500,
+                message: '服务器错误',
+            });
+        });
+};

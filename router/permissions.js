@@ -10,5 +10,7 @@ const permissions = require('../module/permissions')
 router.post('/setMenuPermissions', permissions.setMenuPermissions)
 // 创建菜单权限列表
 router.post('/createMenuPermissions', permissions.createMenuPermissions)
+// 获取菜单权限列表数据
+router.post('/getMenuPermissionsList', permissions.getMenuPermissionsList)
 
 module.exports = router
