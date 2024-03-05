@@ -26,9 +26,6 @@ database: 'my-first-mysql' //指定要操作哪个数据库
     let decrypted = key.decrypt(encrypted, 'utf8');
     console.log(decrypted);
 
-
-2024/2/15
-1. 开始搭建后端
-
-2024/2/25
-1. 开始完善登录模块
+当数据库连接失败的时候，输入这个
+ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'root';
+root为你的数据库密码即可

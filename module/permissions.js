@@ -17,17 +17,41 @@ const getTree = require('../utils/tree')
  * @param {*} res 
  */
 exports.setMenuPermissions = (req, res) => {
-    knex(`blog.menu_table`)
-        .select()
-        .where('is_deleted', 0) // 添加筛选条件：is_deleted=0
-        .then((data) => {
-            let treeData = getTree(data)
-            // console.log(treeData)
-
+    /* 获取到用户的id */
+    const {
+        id
+    } = req.auth
+    /* 获取到当前的时间 */
+    const fullTime = getFullTime()
+    /* 获取角色名字 */
+    const {
+        lists
+    } = req.body;
+    /* 创建一个需要插入的元素 */
+    const insertState = {
+        lists,
+        updated_id: id,
+        updated_time: fullTime
+    }
+    knex(`blog.menu_permissions`) // 'roles' 是你想要更新的表
+        .where({
+            role_id: req.body.role_id
+        }) // 使用where子句指定需要更新的记录，这里假设按照id来更新
+        .update({
+            ...insertState
+        }) // newRoleData 包含了你想要更新的字段和它们的新值
+        .then((result) => {
+            console.log(result)
             res.send({
                 code: 200,
-                data: treeData,
-                message: '获取所有菜单成功',
+                massage: '设置菜单权限成功'
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).send({
+                code: 500,
+                message: '服务器错误',
             });
         });
 };
@@ -79,7 +103,10 @@ exports.createMenuPermissions = (req, res) => {
  * @param {*} res 
  */
 exports.getMenuPermissionsList = (req, res) => {
-    const { page, pageSize } = req.body;
+    const {
+        page,
+        pageSize
+    } = req.body;
     const startIndex = (page - 1) * pageSize;
 
     // 查询总记录数

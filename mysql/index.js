@@ -10,7 +10,7 @@ const knex = require('knex')({
     connection: {
         host: 'localhost',
         user: 'root',
-        password: userInfo.username == 'weibin.ye' ? 'root' : 'admin123', // admin123
+        password: userInfo.username == 'weibin.ye' ? 'root' : 'root', // admin123
         database: 'blog'
     }
 });
