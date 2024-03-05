@@ -94,12 +94,10 @@ exports.getMenuPermissionsList = (req, res) => {
             knex('blog.menu_permissions')
                 .join('role_table', 'menu_permissions.role_id', 'role_table.id')
                 .where('role_table.is_deleted', 0)
-                .select('menu_permissions.*')
+                .select('menu_permissions.*', 'role_table.role_name')
                 .limit(pageSize)
                 .offset(startIndex)
                 .then((data) => {
-                    console.log(data)
-
                     res.send({
                         code: 200,
                         data: {
