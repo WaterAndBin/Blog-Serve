@@ -9,54 +9,19 @@ const getFullTime = require('../utils/time')
 const updateData = require('./utils/updateData')
 
 /**
- * 获取角色列表
+ * 发布文章
  * @param {*} req 
  * @param {*} res 
  */
-exports.getRoleList = (req, res) => {
-    pagination(req, res, 'role_table', '角色列表')
+exports.publishArticle = (req, res) => {
+
 };
 
 /**
- * 添加角色
+ * 获取文章列表
  * @param {*} req 
  * @param {*} res 
  */
-exports.addRole = (req, res) => {
-    /* 获取到用户的id */
-    const {
-        id
-    } = req.auth
-    /* 获取到当前的时间 */
-    const fullTime = getFullTime()
-    /* 获取角色名字 */
-    const {
-        role_name
-    } = req.body;
-    /* 创建一个需要插入的元素 */
-    const insertState = {
-        role_name,
-        created_id: id,
-        created_time: fullTime
-    }
-    /* 调用公用的插入元素 */
-    insertData(req, res, 'role_table', insertState, '添加新角色成功')
-};
-
-/**
- * 修改角色
- * @param {*} req 
- * @param {*} res 
- */
-exports.updateRole = (req, res) => {
-    updateData(req, res, 'role_table', '修改角色数据成功')
-};
-
-/**
- * 获取所有的角色
- * @param {*} req 
- * @param {*} res 
- */
-exports.getAllRole = (req, res) => {
-    updateData(req, res, 'role_table', '修改角色数据成功')
+exports.getArticle = (req, res) => {
+    pagination(req, res, 'article_table', '文章列表')
 };

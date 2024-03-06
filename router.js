@@ -1,8 +1,9 @@
 // 注册路由
 module.exports = (app) => {
-    app.use('/user', require('./router/user'))
-    app.use('/role', require('./router/role'))
-    app.use('/tabs', require('./router/tabs'))
-    app.use('/menu', require('./router/menu'))
-    app.use('/permissions', require('./router/permissions'))
+    app.use('/user', require('./router/user')) // 用户
+    app.use('/role', require('./router/role')) // 角色
+    app.use('/tabs', require('./router/tabs')) // 标签
+    app.use('/menu', require('./router/menu')) // 菜单
+    app.use('/permissions', require('./router/permissions')) // 权限
+    app.use('/article', require('./router/article')) // 文章
 }
