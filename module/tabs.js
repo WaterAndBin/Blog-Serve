@@ -7,6 +7,8 @@ const pagination = require('./utils/pagination')
 const getFullTime = require('../utils/time')
 /* 更新通用方法 */
 const updateData = require('./utils/updateData')
+/* 获取所有的数据 */
+const getAllData = require('./utils/getAllData')
 
 /**
  * 获取标签列表
@@ -55,19 +57,10 @@ exports.updateTabs = (req, res) => {
 };
 
 /**
- * 获取用户列表
+ * 获取所有的标签
  * @param {*} req 
  * @param {*} res 
  */
-exports.getRoleList = (req, res) => {
-    pagination(req, res, 'user_table', '用户列表')
-};
-
-/**
- * 修改用户
- * @param {*} req 
- * @param {*} res 
- */
-exports.updateUser = (req, res) => {
-    updateData(req, res, 'role_table', '修改用户数据成功')
+exports.getAllTabs = (req, res) => {
+    getAllData(req, res, 'tabs_table', '获所有标签成功')
 };

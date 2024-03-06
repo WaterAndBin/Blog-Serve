@@ -14,11 +14,13 @@ const {
 // 导入用户路由处理函数对应的模块
 const tabs = require('../module/tabs')
 
-// 获取到角色列表
+// 获取标签列表
 router.post('/getTabsList', expressJoi(pageRules), tabs.getTabsList)
-/* 插入角色 */
+/* 插入标签 */
 router.post('/addTabs', expressJoi(reg_insert_tabs), tabs.addTabs)
 /* 更新数据 */
 router.post('/updateTabs', expressJoi(reg_update_tabs), tabs.updateTabs)
+/* 获取所有的标签 */
+router.post('/getAlltabs', tabs.getAllTabs)
 
 module.exports = router
