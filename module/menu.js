@@ -38,18 +38,52 @@ exports.getAllMenu = (req, res) => {
  * @param {*} res 
  */
 exports.getMenu = (req, res) => {
-    knex(`blog.menu_table`)
-        .select()
-        .where('is_deleted', 0) // 添加筛选条件：is_deleted=0
-        .where('status', 0) // 添加筛选条件：is_deleted=0
-        .then((data) => {
-            let treeData = getTree(data)
-            // console.log(treeData)
+    /* 获取到用户的角色id */
+    const {
+        role_id
+    } = req.auth
 
-            res.send({
-                code: 200,
-                data: treeData,
-                message: '获取所有菜单成功',
+    knex('blog.menu_permissions')
+        .select('lists') // 只获取lists字段，避免查询额外的字段
+        .where('role_id', role_id) // 进一步过滤出对应的role_id
+        .then((result) => {
+            if (result.length === 0) {
+                res.status(404).send({
+                    code: 404,
+                    message: '没有找到对应的权限',
+                });
+                return;
+            }
+
+            const lists = result[0].lists; // 获取lists数组
+
+            knex('blog.menu_table')
+                .select()
+                .whereIn('id', JSON.parse(lists)) // 在menu_table中查找lists数组中包含的id
+                .andWhere('status', 0) // 添加状态过滤条件
+                .andWhere('is_deleted', 0) // 添加删除标记过滤条件
+                .then((data) => {
+                    const treeData = getTree(data);
+
+                    res.send({
+                        code: 200,
+                        data: treeData,
+                        message: '获取所有菜单成功',
+                    });
+                })
+                .catch((err) => {
+                    console.error(err);
+                    res.status(500).send({
+                        code: 500,
+                        message: '获取菜单失败',
+                    });
+                });
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send({
+                code: 500,
+                message: '获取菜单权限失败',
             });
         });
 };

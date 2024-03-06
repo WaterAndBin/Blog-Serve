@@ -56,6 +56,9 @@ app.use((req, res, next) => {
     next()
 })
 
+/* 设置公共 */
+app.use(express.static('public'));
+
 // app.use() 里面放的 expressJWT().unless()
 // 注册 token 验证中间件
 app.use(expressjwt({
