@@ -6,4 +6,5 @@ module.exports = (app) => {
     app.use('/menu', require('./router/menu')) // 菜单
     app.use('/permissions', require('./router/permissions')) // 权限
     app.use('/article', require('./router/article')) // 文章
+    app.use('/upload', require('./router/upload')) // 文章
 }

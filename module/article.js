@@ -14,7 +14,7 @@ const updateData = require('./utils/updateData')
  * @param {*} res 
  */
 exports.publishArticle = (req, res) => {
-
+    console.log(req.body)
 };
 
 /**
