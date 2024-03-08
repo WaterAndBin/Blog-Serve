@@ -3,6 +3,7 @@
 const knex = require('../mysql/index')
 const fs = require('fs')
 const multer = require('multer');
+const path = require('path').posix;
 
 // 设置 multer 存储
 const storage = multer.diskStorage({
@@ -20,18 +21,13 @@ const storage = multer.diskStorage({
  * @param {*} res 
  */
 exports.picUpload = (req, res) => {
-    // const file = req.files.file; // 假设前端传过来的字段名是 'file'  
-    // const filePath = path.join(__dirname, 'uploads', file.name); // 设置文件保存路径  
+    const filePath = req.file.path; // 获取文件路径
+    const unixPath = path.normalize(filePath).replace(/\\/g, '/');
 
-    // const stream = fs.createWriteStream(filePath); // 创建写入流  
-    // file.stream.pipe(stream); // 将上传的文件流通过管道写入到文件  
-
-    // stream.on('finish', () => {
-    //     res.send('File uploaded successfully.');
-    // });
-
-    // stream.on('error', (err) => {
-    //     res.status(500).send('Error uploading file.');
-    // });
-    console.log(6)
+    // 存储到数据库或返回给客户端
+    res.send({
+        code: 200,
+        data: unixPath,
+        message: '上传图片成功'
+    });
 };

@@ -4,6 +4,7 @@ const { expressjwt } = require('express-jwt');
 const jwt = require('jsonwebtoken')
 const { jwtSecretKey } = require('./config')
 const joi = require('joi')
+const path = require('path')
 
 /* 创建服务器的实例对象 */
 const app = express()
@@ -26,13 +27,12 @@ app.use(express.urlencoded({
     extended: false
 }))
 app.use(express.json())
+/* 静态文件，访问图片 */
+app.use('/public', express.static(__dirname + '/public'));
 
 // 检查用户请求的地址和方法
 app.use((req, res, next) => {
     console.log(`收到请求：${req.method} ${req.path}`)
-    // console.log(req.body)
-    // console.log(req.query)
-    // console.log(req.params)
     next()
 })
 
@@ -56,9 +56,6 @@ app.use((req, res, next) => {
     next()
 })
 
-/* 设置公共 */
-app.use(express.static('public'));
-
 // app.use() 里面放的 expressJWT().unless()
 // 注册 token 验证中间件
 app.use(expressjwt({
@@ -81,7 +78,6 @@ require("./router.js")(app);
 // const endpoints = listEndpoints(app);
 // 现在，endpoints 变量包含所有路由的列表
 // console.log(endpoints);
-
 
 // 定义错误级别的中间件
 app.use((err, req, res, next) => {
