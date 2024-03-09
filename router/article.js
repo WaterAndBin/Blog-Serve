@@ -6,6 +6,9 @@ const router = express.Router()
 const expressJoi = require('@escook/express-joi')
 // 2.导入需要验证规则对象
 const {
+    pageRules
+} = require('../schema/common')
+const {
     reg_login_schema,
     res_user_update
 } = require('../schema/user')
@@ -15,7 +18,7 @@ const article = require('../module/article')
 
 /* 发布文章 */
 router.post('/publishArticle', article.publishArticle)
-/* 获取文章 */
-router.post('/getArticle', article.getArticle)
+/* 获取未审核文章列表 */
+router.post('/getAuditArticleList', expressJoi(pageRules), article.getAuditArticleList)
 
 module.exports = router

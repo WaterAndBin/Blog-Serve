@@ -1,1 +1,2 @@
-"id";"article_title";"article_cover";"article_content";"author_id";"created_time";"updated_time";"tabs_id";"status";"is_deleted"
+"id";"article_title";"article_cover";"article_content";"author_id";"created_time";"updated_time";"tabs_id";"status";"is_deleted";"type";"auditors";"review_time";"reject_reason";"reject_type"
+1;"123123123";"public/images/file-17099822811581709630237972.jpg";"<p>123 <strong>4<s>6</s>5</strong> <strong>test</strong> ddd <strong><u>a<i>sd78</i>9123</u></strong></p><p><strong><u>123213</u></strong></p>";6;"2024/3/9 19:04";"";"";0;0;1;0;"";"";0

@@ -29,3 +29,10 @@ database: 'my-first-mysql' //指定要操作哪个数据库
 当数据库连接失败的时候，输入这个
 ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'root';
 root为你的数据库密码即可
+
+发布文章之后的状态
+0未知状态
+1审核中
+2通过审核
+3不通过审核
+4举报
