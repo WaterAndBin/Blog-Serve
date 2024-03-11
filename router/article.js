@@ -20,5 +20,9 @@ const article = require('../module/article')
 router.post('/publishArticle', article.publishArticle)
 /* 获取未审核文章列表 */
 router.post('/getAuditArticleList', expressJoi(pageRules), article.getAuditArticleList)
+/* 文章审核 */
+router.post('/setAuditArticle', article.setAuditArticle)
+/* 获取我个人的文章 */
+router.post('/getMyArticle', article.getMyArticle)
 
 module.exports = router
