@@ -24,5 +24,11 @@ router.post('/getAuditArticleList', expressJoi(pageRules), article.getAuditArtic
 router.post('/setAuditArticle', article.setAuditArticle)
 /* 获取我个人的文章 */
 router.post('/getMyArticle', article.getMyArticle)
+/* 更新文章 */
+router.post('/updateArticle', article.updateArticle)
+/* 获取文章所有列表 */
+router.post('/getAllArticleList', article.getAllArticleList)
+/* 获取文章详细数据 */
+router.post('/getArticleDetail', article.getArticleDetail)
 
 module.exports = router

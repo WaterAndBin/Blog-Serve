@@ -170,3 +170,120 @@ exports.getMyArticle = (req, res) => {
 exports.updateArticle = (req, res) => {
     updateData(req, res, 'article_table', '修改标签数据成功')
 }
+
+/**
+ * 前台：获取所有的文章列表
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getAllArticleList = (req, res) => {
+    const {
+        page, pageSize
+    } = req.body; // 获取当前页数和每页展示数量
+    const startIndex = (page - 1) * pageSize; // 计算起始查询位置
+
+    knex(`blog.article_table`)
+        .count('* as total') // 查询数据总数
+        .where('status', 2)
+        .andWhere('is_deleted', '=', 0)
+        .then(([{ total }]) => {
+            knex(`blog.article_table`)
+                .where('status', 2)
+                .andWhere('is_deleted', '=', 0)
+                .limit(pageSize)
+                .offset(startIndex)
+                .then((articles) => {
+                    if (articles.length != 0) {
+                        const articlePromises = articles.map(article => {
+                            return knex(`user_table`)
+                                .where('id', article.author_id)
+                                .select(['id', 'user_name', 'role_id', 'account', 'created_time', 'is_deleted', 'status'])
+                        });
+
+                        // 等待所有作者信息查询完成  
+                        Promise.all(articlePromises)
+                            .then(authors => {
+                                // 组合文章和作者信息  
+                                const data = articles.map((article, index) => {
+                                    return {
+                                        ...article,
+                                        author: authors[index][0]
+                                    };
+                                });
+                                res.send({
+                                    code: 200,
+                                    data: {
+                                        currentPage: page,
+                                        pageSize,
+                                        total,
+                                        list: data,
+                                    },
+                                    message: `获取所有文章列表成功`,
+                                });
+                            })
+                            .catch(error => {
+                                console.log(error);
+                                res.status(500).send({
+                                    code: 500,
+                                    message: '服务器错误',
+                                });
+                            });
+                    } else {
+                        res.send({
+                            code: 200,
+                            data: {
+                                currentPage: page,
+                                pageSize,
+                                total,
+                                list: articles,
+                            },
+                            message: `获取所有文章列表成功`,
+                        })
+                    }
+                });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send({
+                code: 500,
+                message: '服务器错误',
+            });
+        });
+};
+
+/**
+ * 获取文章详细数据
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getArticleDetail = (req, res) => {
+    const { id } = req.body
+    knex('blog.article_table').where('id', id).first()
+        .then((row) => {
+            knex('blog.user_table').where('id', row.author_id).first()
+                .then((data) => {
+                    res.send({
+                        code: 200,
+                        data: {
+                            ...row,
+                            author: data
+                        },
+                        message: '获取文章详情成功'
+                    })
+                })
+                .catch((err) => {
+                    console.error(err);
+                    res.status(500).send({
+                        code: 500,
+                        message: '获取文章详情失败',
+                    });
+                });
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send({
+                code: 500,
+                message: '获取文章详情失败',
+            });
+        });
+};

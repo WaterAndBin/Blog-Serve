@@ -65,7 +65,7 @@ app.use(expressjwt({
     algorithms: ['HS256']
 }).unless({
     // 不需要验证 token 的路径标识符
-    path: ['/user/login', '/user/register']
+    path: ['/user/login', '/user/register', '/article/getAllArticleList', '/article/getArticleDetail']
 }))
 
 
