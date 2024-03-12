@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `blog` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `blog`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: blog
@@ -40,7 +42,7 @@ CREATE TABLE `menu_permissions` (
 
 LOCK TABLES `menu_permissions` WRITE;
 /*!40000 ALTER TABLE `menu_permissions` DISABLE KEYS */;
-INSERT INTO `menu_permissions` VALUES (20,NULL,6,'2024/3/5 12:9',NULL,NULL);
+INSERT INTO `menu_permissions` VALUES (20,'[9,10,11,12,13,14,15,18,19,20,16,17]',6,'2024/3/5 12:9',6,'2024/3/6 14:08'),(21,'[14,19,20]',6,'2024/3/6 14:26',6,'2024/3/6 14:26'),(22,'[14,15,18]',6,'2024/3/6 14:26',6,'2024/3/6 14:26'),(23,'[9,10,12,13,14,15,18]',6,'2024/3/6 14:27',6,'2024/3/6 14:27');
 /*!40000 ALTER TABLE `menu_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-05 19:38:28
+-- Dump completed on 2024-03-12 10:14:14

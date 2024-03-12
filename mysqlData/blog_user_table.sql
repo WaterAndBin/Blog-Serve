@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `blog` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `blog`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: blog
@@ -42,7 +44,7 @@ CREATE TABLE `user_table` (
 
 LOCK TABLES `user_table` WRITE;
 /*!40000 ALTER TABLE `user_table` DISABLE KEYS */;
-INSERT INTO `user_table` VALUES (1,'管理员',1,'root','root','',1,0),(5,'Jessica Labadie',1,'123','$2a$10$AMSZV9Lw1zjTx1qlM.yuh.NtAYn9k6N01LGCubF3qIs3HlXzkNPJG','2024/2/27 11:28',1,0),(6,'测试123',7,'333','$2a$10$EjUW36GvwpYNO3UhYKoW..ytImU4tvsgRQrks7eNFD6dSbBKW.9le','2024/2/27 11:44',0,0);
+INSERT INTO `user_table` VALUES (1,'管理员',1,'root','root','',1,0),(5,'Jessica Labadie',1,'123','$2a$10$AMSZV9Lw1zjTx1qlM.yuh.NtAYn9k6N01LGCubF3qIs3HlXzkNPJG','2024/2/27 11:28',1,0),(6,'测试123',20,'333','$2a$10$EjUW36GvwpYNO3UhYKoW..ytImU4tvsgRQrks7eNFD6dSbBKW.9le','2024/2/27 11:44',0,0);
 /*!40000 ALTER TABLE `user_table` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-05 19:38:29
+-- Dump completed on 2024-03-12 10:14:14

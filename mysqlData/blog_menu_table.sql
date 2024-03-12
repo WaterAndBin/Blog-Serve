@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `blog` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `blog`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: blog
@@ -36,7 +38,7 @@ CREATE TABLE `menu_table` (
   `icon` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +47,7 @@ CREATE TABLE `menu_table` (
 
 LOCK TABLES `menu_table` WRITE;
 /*!40000 ALTER TABLE `menu_table` DISABLE KEYS */;
-INSERT INTO `menu_table` VALUES (1,'测试','/测试',0,0,1,6,'2024/2/29 20:25',6,'2024/3/1 15:11',NULL),(2,'测试123','/测试123',0,1,1,6,'2024/3/1 12:49',6,'2024/3/1 15:11',NULL),(3,'测试333','/测试333',1,0,1,6,'2024/3/1 12:49',6,'2024/3/1 15:11',NULL),(4,'测试666','/测试666',3,1,1,6,'2024/3/1 13:58',6,'2024/3/1 15:6',NULL),(5,'123','123',3,1,0,6,'2024/3/1 15:8',6,'2024/3/1 15:10',NULL),(6,'123','123',1,0,1,6,'2024/3/1 15:9',6,'2024/3/1 15:11',NULL),(7,'1234','1234',6,0,1,6,'2024/3/1 15:10',6,'2024/3/1 15:11',NULL),(8,'12344','12344',7,0,1,6,'2024/3/1 15:11',6,'2024/3/1 15:11',NULL),(9,'系统管理','',0,0,0,6,'2024/3/1 15:14',6,'2024/3/4 14:19','carbon:application-web'),(10,'菜单管理','/system/menu',9,0,0,6,'2024/3/1 15:15',NULL,NULL,NULL),(11,'角色管理','/system/role',9,0,0,6,'2024/3/1 15:16',NULL,NULL,NULL),(12,'用户管理','/system/user',9,0,0,6,'2024/3/1 15:16',NULL,NULL,NULL),(13,'标签管理','/system/tabs',9,0,0,6,'2024/3/1 15:16',6,'2024/3/1 15:22',NULL),(14,'文章管理','',0,0,0,6,'2024/3/1 17:55',6,'2024/3/4 14:21','pixelarticons:calendar-text'),(15,'文章审核','/article/audit',14,0,0,6,'2024/3/1 18:5',NULL,NULL,NULL),(16,'权限管理','',0,0,0,6,'2024/3/4 10:42',6,'2024/3/4 14:22','icon-park-twotone:folder-lock-one'),(17,'菜单权限','/permissions/menuPermissions',16,0,0,6,'2024/3/4 10:43',NULL,NULL,NULL);
+INSERT INTO `menu_table` VALUES (1,'测试','/测试',0,0,1,6,'2024/2/29 20:25',6,'2024/3/1 15:11',NULL),(2,'测试123','/测试123',0,1,1,6,'2024/3/1 12:49',6,'2024/3/1 15:11',NULL),(3,'测试333','/测试333',1,0,1,6,'2024/3/1 12:49',6,'2024/3/1 15:11',NULL),(4,'测试666','/测试666',3,1,1,6,'2024/3/1 13:58',6,'2024/3/1 15:6',NULL),(5,'123','123',3,1,0,6,'2024/3/1 15:8',6,'2024/3/1 15:10',NULL),(6,'123','123',1,0,1,6,'2024/3/1 15:9',6,'2024/3/1 15:11',NULL),(7,'1234','1234',6,0,1,6,'2024/3/1 15:10',6,'2024/3/1 15:11',NULL),(8,'12344','12344',7,0,1,6,'2024/3/1 15:11',6,'2024/3/1 15:11',NULL),(9,'系统管理','',0,0,0,6,'2024/3/1 15:14',6,'2024/3/4 14:19','carbon:application-web'),(10,'菜单管理','/system/menu',9,0,0,6,'2024/3/1 15:15',NULL,NULL,NULL),(11,'角色管理','/system/role',9,0,0,6,'2024/3/1 15:16',NULL,NULL,NULL),(12,'用户管理','/system/user',9,0,0,6,'2024/3/1 15:16',NULL,NULL,NULL),(13,'标签管理','/system/tabs',9,0,0,6,'2024/3/1 15:16',6,'2024/3/1 15:22',NULL),(14,'文章管理','',0,0,0,6,'2024/3/1 17:55',6,'2024/3/4 14:21','pixelarticons:calendar-text'),(15,'文章审核','/article/audit',14,0,0,6,'2024/3/1 18:5',NULL,NULL,NULL),(16,'权限管理','',0,0,0,6,'2024/3/4 10:42',6,'2024/3/4 14:22','icon-park-twotone:folder-lock-one'),(17,'菜单权限','/permissions/menuPermissions',16,0,0,6,'2024/3/4 10:43',NULL,NULL,NULL),(18,'举报文章列表','/article/report',14,0,0,6,'2024/3/6 010:49',6,'2024/3/11 17:41',NULL),(19,'我的文章','/article/myArticle',14,0,0,6,'2024/3/6 010:49',6,'2024/3/6 20:48',NULL),(20,'文章评论','',14,0,0,6,'2024/3/6 010:49',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `menu_table` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -58,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-05 19:38:28
+-- Dump completed on 2024-03-12 10:14:14

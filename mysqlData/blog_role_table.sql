@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `blog` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `blog`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: blog
@@ -33,7 +35,7 @@ CREATE TABLE `role_table` (
   `status` int NOT NULL DEFAULT '0' COMMENT '状态',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +44,7 @@ CREATE TABLE `role_table` (
 
 LOCK TABLES `role_table` WRITE;
 /*!40000 ALTER TABLE `role_table` DISABLE KEYS */;
-INSERT INTO `role_table` VALUES (20,'测试123',0,6,'2024/3/5 12:9',NULL,NULL,0);
+INSERT INTO `role_table` VALUES (20,'管理员',0,6,'2024/3/5 12:9',6,'2024/3/6 14:26',0),(21,'游客',0,6,'2024/3/6 14:26',NULL,NULL,0),(22,'审核员',0,6,'2024/3/6 14:26',NULL,NULL,0),(23,'系统操作人员',0,6,'2024/3/6 14:27',NULL,NULL,0);
 /*!40000 ALTER TABLE `role_table` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-05 19:38:29
+-- Dump completed on 2024-03-12 10:14:15
