@@ -287,3 +287,12 @@ exports.getArticleDetail = (req, res) => {
             });
         });
 };
+
+/**
+ * 举报文章
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.reportArticle = (req, res) => {
+    updateData(req, res, 'article_table', '举报文章成功')
+}
