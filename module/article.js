@@ -122,7 +122,7 @@ exports.setAuditArticle = (req, res) => {
 }
 
 /**
- * 文章通过审核
+ * 获取我发布过的文章
  * @param {*} req 
  * @param {*} res 
  */
@@ -289,10 +289,47 @@ exports.getArticleDetail = (req, res) => {
 };
 
 /**
- * 举报文章
+ * 获取举报文章
  * @param {*} req 
  * @param {*} res 
  */
-exports.reportArticle = (req, res) => {
-    updateData(req, res, 'article_table', '举报文章成功')
+exports.getRejectArticleList = (req, res) => {
+    const {
+        page, pageSize
+    } = req.body; // 获取当前页数和每页展示数量
+    const startIndex = (page - 1) * pageSize; // 计算起始查询位置
+
+    /* 先查表 */
+    knex('report_table')
+        .select('report_table.*')
+        .join('article_table', 'report_table.id', 'article_table.id')
+        .where('article_table.is_deleted', 0)
+        .limit(pageSize)
+        .offset(startIndex)
+        .then(rows => {
+            console.log(rows)
+
+            // 处理查询结果，将每个结果映射为具有两个属性的对象：report和article  
+            const combinedData = rows.map(row => ({
+                report: pickProperties(row, ...Object.keys(row).filter(key => key.startsWith('report_table'))),
+                article: pickProperties(row, ...Object.keys(row).filter(key => key.startsWith('article_table')))
+            }));
+
+            // 输出结果  
+            console.log(combinedData);
+        })
+        .catch(err => {
+            // 处理错误  
+            console.error(err);
+        });
+};
+
+// 辅助函数，用于从对象中挑选出具有特定前缀的属性  
+function pickProperties(obj, ...keys) {
+    return keys.reduce((result, key) => {
+        if (obj.hasOwnProperty(key)) {
+            result[key] = obj[key];
+        }
+        return result;
+    }, {});
 }

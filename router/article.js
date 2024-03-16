@@ -30,7 +30,7 @@ router.post('/updateArticle', article.updateArticle)
 router.post('/getAllArticleList', article.getAllArticleList)
 /* 获取文章详细数据 */
 router.post('/getArticleDetail', article.getArticleDetail)
-/* 举报文章 */
-router.post('/reportArticle', article.reportArticle)
+/* 获取举报列表 */
+router.post('/getRejectArticleList', article.getRejectArticleList)
 
 module.exports = router
