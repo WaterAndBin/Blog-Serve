@@ -8,4 +8,5 @@ module.exports = (app) => {
     app.use('/article', require('./router/article')) // 文章
     app.use('/upload', require('./router/upload')) // 上传照片
     app.use('/report', require('./router/report')) // 举报
+    app.use('/comments', require('./router/comments')) // 评论
 }

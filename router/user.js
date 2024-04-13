@@ -20,5 +20,7 @@ router.post('/register', expressJoi(reg_login_schema), user.register)
 router.post('/getUserList', expressJoi(reg_login_schema), user.getUserList)
 /* 获取用户列表 */
 router.post('/updateUser', expressJoi(res_user_update), user.updateUser)
+/* 获取个人信息 */
+router.post('/getMyInfo', user.getMyInfo)
 
 module.exports = router

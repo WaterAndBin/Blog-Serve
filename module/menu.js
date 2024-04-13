@@ -42,6 +42,7 @@ exports.getMenu = (req, res) => {
     const {
         role_id
     } = req.auth
+    console.log(role_id)
 
     knex('blog.menu_permissions')
         .select('lists') // 只获取lists字段，避免查询额外的字段

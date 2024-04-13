@@ -79,7 +79,7 @@ exports.register = (req, res) => {
                     user_name: faker.name.findName(), // 用户姓名
                     account: account, // 账号
                     password: bcrypt.hashSync(String(password), 10), // 加密密码
-                    role_id: 12, // 角色id
+                    role_id: 23, // 角色id
                     created_time: getFullTime() // 创建时间
                 }
                 insertData(req, res, 'user_table', insertState, '注册成功')
@@ -109,8 +109,12 @@ exports.getUserList = (req, res) => {
  */
 exports.updateUser = (req, res) => {
     knex(`blog.user_table`) // 'roles' 是你想要更新的表
-        .where({ id: req.body.id }) // 使用where子句指定需要更新的记录，这里假设按照id来更新
-        .update({ ...req.body }) // newRoleData 包含了你想要更新的字段和它们的新值
+        .where({
+            id: req.body.id
+        }) // 使用where子句指定需要更新的记录，这里假设按照id来更新
+        .update({
+            ...req.body
+        }) // newRoleData 包含了你想要更新的字段和它们的新值
         .then((result) => {
             res.send({
                 code: 200,
@@ -125,3 +129,24 @@ exports.updateUser = (req, res) => {
             });
         });
 };
+
+/**
+ * 获取个人信息
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getMyInfo = (req, res) => {
+    knex('user_table')
+        .where('id', req.auth.id).first()
+        .then(result => {
+            res.send({
+                code: 200,
+                data: result,
+                message: '获取个人信息成功',
+            });
+        })
+        .catch(error => {
+            console.log(err)
+            res.error(`${req.path} 数据库出错`, 500)
+        });
+}

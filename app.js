@@ -1,13 +1,42 @@
 /* 导入express */
 const express = require('express')
-const { expressjwt } = require('express-jwt');
+const {
+    expressjwt
+} = require('express-jwt');
 const jwt = require('jsonwebtoken')
-const { jwtSecretKey } = require('./config')
+const {
+    jwtSecretKey
+} = require('./config')
 const joi = require('joi')
 const path = require('path')
+const winston = require('winston');
+const {
+    format,
+    transports
+} = require("winston");
 
 /* 创建服务器的实例对象 */
 const app = express()
+
+// 创建 winston logger 实例  
+const logger = winston.createLogger({
+    transports: [
+        new transports.File({
+            filename: "logs/server.log",
+            level: "info",
+            format: format.combine(
+                format.timestamp({
+                    format: "YYYY-MM-DD HH:mm:ss"
+                }),
+                format.align(),
+                format.printf(
+                    (info) =>
+                    `${info.level}: ${[info.timestamp]}: ${info.message}`
+                )
+            ),
+        }),
+    ],
+});
 
 // 导入并配置 cros 中间件
 const cors = require('cors')
@@ -32,7 +61,10 @@ app.use('/public', express.static(__dirname + '/public'));
 
 // 检查用户请求的地址和方法
 app.use((req, res, next) => {
-    console.log(`收到请求：${req.method} ${req.path}`)
+    console.log(`${req.method} ${req.path}`)
+    logger.info({
+        message: `收到请求： ${req.method} <==> ${req.originalUrl}`,
+    });
     next()
 })
 
@@ -41,6 +73,12 @@ app.use((req, res, next) => {
     // status 默认值为1 表示失败的情况
     // err的值，可能是一个错误对象，也可以是一个错误的描述字符串
     res.error = (err, code = -1) => {
+        logger.error({
+            message: err.message,
+            stack: err.stack,
+            // 可以添加更多关于请求的信息  
+            url: req.originalUrl,
+        });
         if (code == 500) {
             res.status(code).send({
                 code: code,

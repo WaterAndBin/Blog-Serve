@@ -30,14 +30,17 @@ exports.publishArticle = (req, res) => {
  */
 exports.getAuditArticleList = (req, res) => {
     const {
-        page, pageSize
+        page,
+        pageSize
     } = req.body; // 获取当前页数和每页展示数量
     const startIndex = (page - 1) * pageSize; // 计算起始查询位置
 
     knex(`blog.article_table`)
         .count('* as total') // 查询数据总数
         .where('status', 1)
-        .then(([{ total }]) => {
+        .then(([{
+            total
+        }]) => {
             knex(`blog.article_table`)
                 .where('status', 1) //
                 .limit(pageSize)
@@ -104,8 +107,12 @@ exports.setAuditArticle = (req, res) => {
     }
 
     knex(`blog.article_table`) // 'roles' 是你想要更新的表
-        .where({ id: req.body.id }) // 使用where子句指定需要更新的记录，这里假设按照id来更新
-        .update({ ...timerData }) // newRoleData 包含了你想要更新的字段和它们的新值
+        .where({
+            id: req.body.id
+        }) // 使用where子句指定需要更新的记录，这里假设按照id来更新
+        .update({
+            ...timerData
+        }) // newRoleData 包含了你想要更新的字段和它们的新值
         .then((result) => {
             res.send({
                 code: 200,
@@ -128,14 +135,17 @@ exports.setAuditArticle = (req, res) => {
  */
 exports.getMyArticle = (req, res) => {
     const {
-        page, pageSize
+        page,
+        pageSize
     } = req.body; // 获取当前页数和每页展示数量
     const startIndex = (page - 1) * pageSize; // 计算起始查询位置
 
     knex(`blog.article_table`)
         .count('* as total') // 查询数据总数
         .where('is_deleted', 0) // 添加筛选条件：is_deleted=0
-        .then(([{ total }]) => {
+        .then(([{
+            total
+        }]) => {
             knex(`blog.article_table`)
                 .where('author_id', req.auth.id) // 添加筛选条件：is_deleted=0
                 .limit(pageSize)
@@ -178,7 +188,8 @@ exports.updateArticle = (req, res) => {
  */
 exports.getAllArticleList = (req, res) => {
     const {
-        page, pageSize
+        page,
+        pageSize
     } = req.body; // 获取当前页数和每页展示数量
     const startIndex = (page - 1) * pageSize; // 计算起始查询位置
 
@@ -186,7 +197,9 @@ exports.getAllArticleList = (req, res) => {
         .count('* as total') // 查询数据总数
         .where('status', 2)
         .andWhere('is_deleted', '=', 0)
-        .then(([{ total }]) => {
+        .then(([{
+            total
+        }]) => {
             knex(`blog.article_table`)
                 .where('status', 2)
                 .andWhere('is_deleted', '=', 0)
@@ -257,7 +270,9 @@ exports.getAllArticleList = (req, res) => {
  * @param {*} res 
  */
 exports.getArticleDetail = (req, res) => {
-    const { id } = req.body
+    const {
+        id
+    } = req.body
     knex('blog.article_table').where('id', id).first()
         .then((row) => {
             knex('blog.user_table').where('id', row.author_id).first()
@@ -295,34 +310,139 @@ exports.getArticleDetail = (req, res) => {
  */
 exports.getRejectArticleList = (req, res) => {
     const {
-        page, pageSize
+        page,
+        pageSize
     } = req.body; // 获取当前页数和每页展示数量
     const startIndex = (page - 1) * pageSize; // 计算起始查询位置
 
+    knex(`blog.article_table`)
+        .count('* as total') // 查询数据总数
+        .where('type', 1)
+        .then(([{
+            total
+        }]) => {
+            knex(`blog.article_table`)
+                .where('type', 1) //
+                .limit(pageSize)
+                .offset(startIndex)
+                .then((articles) => {
+                    const articlePromises = articles.map(article => {
+                        return knex(`user_table`)
+                            .where('id', article.author_id)
+                            .select(['id', 'user_name', 'role_id', 'account', 'created_time', 'is_deleted', 'status'])
+                    });
+
+                    // 等待所有作者信息查询完成  
+                    Promise.all(articlePromises)
+                        .then(authors => {
+                            // 组合文章和作者信息  
+                            const data = articles.map((article, index) => {
+                                return {
+                                    ...article,
+                                    author: authors[index][0]
+                                };
+                            });
+                            res.send({
+                                code: 200,
+                                data: {
+                                    currentPage: page,
+                                    pageSize,
+                                    total,
+                                    list: data,
+                                },
+                                message: `获取未审核文章列表成功`,
+                            });
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            res.status(500).send({
+                                code: 500,
+                                message: '服务器错误',
+                            });
+                        });
+                });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send({
+                code: 500,
+                message: '服务器错误',
+            });
+        });
+
+
     /* 先查表 */
+    // knex('report_table')
+    //     .select('article_table.*')
+    //     .join('article_table', 'report_table.id', 'article_table.id')
+    //     .where('article_table.is_deleted', 0)
+    //     .limit(pageSize)
+    //     .offset(startIndex)
+    //     .then(rows => {
+    //         console.log(rows)
+
+    //         // 处理查询结果，将每个结果映射为具有两个属性的对象：report和article  
+    //         const combinedData = rows.map(row => ({
+    //             report: pickProperties(row, ...Object.keys(row).filter(key => key.startsWith('report_table'))),
+    //             article: pickProperties(row, ...Object.keys(row).filter(key => key.startsWith('article_table')))
+    //         }));
+
+    //         // 输出结果  
+    //         console.log(combinedData);
+    //     })
+    //     .catch(err => {
+    //         // 处理错误  
+    //         console.error(err);
+    //     });
+};
+
+/**
+ * 获取举报列表
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getRejectReasonList = (req, res) => {
     knex('report_table')
-        .select('report_table.*')
-        .join('article_table', 'report_table.id', 'article_table.id')
-        .where('article_table.is_deleted', 0)
-        .limit(pageSize)
-        .offset(startIndex)
+        .where({
+            id: req.body.id
+        }).andWhere('type', '=', '0') // 添加查询条件  
         .then(rows => {
             console.log(rows)
-
-            // 处理查询结果，将每个结果映射为具有两个属性的对象：report和article  
-            const combinedData = rows.map(row => ({
-                report: pickProperties(row, ...Object.keys(row).filter(key => key.startsWith('report_table'))),
-                article: pickProperties(row, ...Object.keys(row).filter(key => key.startsWith('article_table')))
-            }));
-
-            // 输出结果  
-            console.log(combinedData);
+            res.send({
+                code: 200,
+                data: rows,
+                message: '获取举报列表成功'
+            })
         })
         .catch(err => {
-            // 处理错误  
-            console.error(err);
+            console.log(error);
+            res.status(500).send({
+                code: 500,
+                message: '服务器错误',
+            });
         });
-};
+}
+
+/**
+ * 处理举报列表
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.handleRejectReasonList = (req, res) => {
+    knex('report_table') // 假设你的表名是 users  
+        .update({
+            type: 0
+        }) // 设置要更新的字段和值  
+        .where({
+            type_id: 2
+        }) // 添加更新条件  
+        .then(affectedRows => {
+            console.log(`${affectedRows} rows were updated.`); // 输出受影响的行数  
+        })
+        .catch(err => {
+            console.error('Error updating data:', err); // 输出任何错误  
+        });
+}
 
 // 辅助函数，用于从对象中挑选出具有特定前缀的属性  
 function pickProperties(obj, ...keys) {

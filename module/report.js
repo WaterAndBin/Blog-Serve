@@ -15,5 +15,27 @@ const updateData = require('./utils/updateData')
  */
 exports.reportArticle = (req, res) => {
     console.log(req.body)
-    insertData(req, res, 'report_table', { ...req.body }, '举报文章成功')
+    /* 插入消息 */
+    insertData(req, res, 'report_table', {
+        ...req.body
+    }, '举报文章成功')
+
+    /* 改变文章状态 */
+    knex(`article_table`)
+        .where({
+            id: req.body.id
+        }).first()
+        .update({
+            type: 1
+        })
+        .then((result) => {
+            console.log('成功改变文章举报状态')
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).send({
+                code: 500,
+                message: '服务器错误',
+            });
+        });
 }
