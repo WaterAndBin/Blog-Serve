@@ -59,26 +59,12 @@ app.use(express.json())
 /* 静态文件，访问图片 */
 app.use('/public', express.static(__dirname + '/public'));
 
-// 检查用户请求的地址和方法
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path}`)
-    logger.info({
-        message: `收到请求： ${req.method} <==> ${req.originalUrl}`,
-    });
-    next()
-})
-
 // 一定要在路由之前，封装全局错误信息
 app.use((req, res, next) => {
     // status 默认值为1 表示失败的情况
     // err的值，可能是一个错误对象，也可以是一个错误的描述字符串
     res.error = (err, code = -1) => {
-        logger.error({
-            message: err.message,
-            stack: err.stack,
-            // 可以添加更多关于请求的信息  
-            url: req.originalUrl,
-        });
+        logger.error(`错误：错误信息${err.toString()}，错误地址：${req.originalUrl}`);
         if (code == 500) {
             res.status(code).send({
                 code: code,
@@ -106,6 +92,14 @@ app.use(expressjwt({
     path: ['/user/login', '/user/register', '/article/getAllArticleList', '/article/getArticleDetail']
 }))
 
+// 检查用户请求的地址和方法
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`)
+    logger.info({
+        message: `收到请求： 请求人id：${req?.auth?.id ?? '游客'}，请求方式：${req.method}，请求地址：${req.originalUrl}`,
+    });
+    next()
+})
 
 /* 挂载路由 */
 require("./router.js")(app);

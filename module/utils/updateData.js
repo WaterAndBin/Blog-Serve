@@ -15,7 +15,7 @@ const updateData = (req, res, schema, message) => {
     const fullTime = getFullTime()
     /* 创建一个临时的数据 */
     let timerData
-    if (req.path == '/reportArticle') {
+    if (req.path == '/reportArticle' || req.path == '/updateArticle') {
         timerData = {
             ...req.body,
         }
@@ -28,8 +28,12 @@ const updateData = (req, res, schema, message) => {
     }
 
     knex(`${originContainer}.${schema}`) // 'roles' 是你想要更新的表
-        .where({ id: req.body.id }) // 使用where子句指定需要更新的记录，这里假设按照id来更新
-        .update({ ...timerData }) // newRoleData 包含了你想要更新的字段和它们的新值
+        .where({
+            id: req.body.id
+        }) // 使用where子句指定需要更新的记录，这里假设按照id来更新
+        .update({
+            ...timerData
+        }) // newRoleData 包含了你想要更新的字段和它们的新值
         .then((result) => {
             console.log(result)
             res.send({

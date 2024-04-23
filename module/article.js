@@ -42,7 +42,7 @@ exports.getAuditArticleList = (req, res) => {
             total
         }]) => {
             knex(`blog.article_table`)
-                .where('status', 1) //
+                .where('status', 1)
                 .limit(pageSize)
                 .offset(startIndex)
                 .then((articles) => {
@@ -147,7 +147,8 @@ exports.getMyArticle = (req, res) => {
             total
         }]) => {
             knex(`blog.article_table`)
-                .where('author_id', req.auth.id) // 添加筛选条件：is_deleted=0
+                .where('author_id', req.auth.id)
+                .andWhere('is_deleted', 0) // 添加筛选条件：is_deleted=0 
                 .limit(pageSize)
                 .offset(startIndex)
                 .then((data) => {
@@ -318,11 +319,13 @@ exports.getRejectArticleList = (req, res) => {
     knex(`blog.article_table`)
         .count('* as total') // 查询数据总数
         .where('type', 1)
+        .andWhere('is_deleted', 0)
         .then(([{
             total
         }]) => {
             knex(`blog.article_table`)
-                .where('type', 1) //
+                .where('type', 1)
+                .andWhere('is_deleted', 0)
                 .limit(pageSize)
                 .offset(startIndex)
                 .then((articles) => {
@@ -395,54 +398,6 @@ exports.getRejectArticleList = (req, res) => {
     //         console.error(err);
     //     });
 };
-
-/**
- * 获取举报列表
- * @param {*} req 
- * @param {*} res 
- */
-exports.getRejectReasonList = (req, res) => {
-    knex('report_table')
-        .where({
-            id: req.body.id
-        }).andWhere('type', '=', '0') // 添加查询条件  
-        .then(rows => {
-            console.log(rows)
-            res.send({
-                code: 200,
-                data: rows,
-                message: '获取举报列表成功'
-            })
-        })
-        .catch(err => {
-            console.log(error);
-            res.status(500).send({
-                code: 500,
-                message: '服务器错误',
-            });
-        });
-}
-
-/**
- * 处理举报列表
- * @param {*} req 
- * @param {*} res 
- */
-exports.handleRejectReasonList = (req, res) => {
-    knex('report_table') // 假设你的表名是 users  
-        .update({
-            type: 0
-        }) // 设置要更新的字段和值  
-        .where({
-            type_id: 2
-        }) // 添加更新条件  
-        .then(affectedRows => {
-            console.log(`${affectedRows} rows were updated.`); // 输出受影响的行数  
-        })
-        .catch(err => {
-            console.error('Error updating data:', err); // 输出任何错误  
-        });
-}
 
 // 辅助函数，用于从对象中挑选出具有特定前缀的属性  
 function pickProperties(obj, ...keys) {
