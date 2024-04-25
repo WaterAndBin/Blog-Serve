@@ -29,10 +29,11 @@ exports.reportArticle = (req, res) => {
             type: 1
         })
         .then((result) => {
-            res.send({
-                code: 200,
-                message: '举报成功',
-            });
+            // res.send({
+            //     code: 200,
+            //     message: '举报成功',
+            // });
+            console.log('改变文章状态成功')
         })
         .catch(err => {
             console.log(err)
@@ -51,10 +52,9 @@ exports.reportArticle = (req, res) => {
 exports.getRejectReasonList = (req, res) => {
     knex('report_table')
         .where({
-            id: req.body.id
+            article_id: req.body.id
         }).andWhere('type', '=', '0') // 添加查询条件  
         .then(rows => {
-            console.log(rows)
             res.send({
                 code: 200,
                 data: rows,
@@ -76,18 +76,44 @@ exports.getRejectReasonList = (req, res) => {
  * @param {*} res 
  */
 exports.handleRejectReasonList = (req, res) => {
+    const {
+        id,
+        status,
+        reject_type,
+        reject_reason,
+        type
+    } = req.body
+
+    /* 更新被举报的数据 */
     knex('report_table')
         .update({
             type: 1
         })
         .where({
-            article_id: req.body.article_id
+            article_id: req.body.id
         }) // 添加更新条件  
         .then(affectedRows => {
-            res.send({
-                code: 200,
-                message: '处理举报列表成功'
+
+            /* 更新文章状态 */
+            knex('article_table').update({
+                status: status,
+                reject_type: reject_type,
+                reject_reason: reject_reason,
+                type: type
+            }).where({
+                id: id
+            }).then(rows => {
+                res.send({
+                    code: 200,
+                    message: '处理举报列表成功'
+                })
+            }).catch(err => {
+                res.error(
+                    err,
+                    500
+                );
             })
+
         })
         .catch(err => {
             res.error(

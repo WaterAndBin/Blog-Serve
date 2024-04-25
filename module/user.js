@@ -32,20 +32,27 @@ exports.login = (req, res) => {
         .then(result => {
             /* 判断密码是否相同 */
             if (bcrypt.compareSync(String(password), result.password)) {
-                /* 删掉密码 */
-                delete result.password
-                /* 生成一个 token 返回给前端 */
-                const token = jwt.sign({
-                    ...result
-                }, jwtSecretKey, {
-                    expiresIn: '1h'
-                })
+                if (result.status == 1) {
+                    res.send({
+                        code: 202,
+                        message: '该用户已被禁用'
+                    })
+                } else {
+                    /* 删掉密码 */
+                    delete result.password
+                    /* 生成一个 token 返回给前端 */
+                    const token = jwt.sign({
+                        ...result
+                    }, jwtSecretKey, {
+                        expiresIn: '1h'
+                    })
 
-                res.send({
-                    code: 200,
-                    message: '登录成功',
-                    token
-                });
+                    res.send({
+                        code: 200,
+                        message: '登录成功',
+                        token
+                    });
+                }
             } else {
                 res.error('密码错误', 201)
             }

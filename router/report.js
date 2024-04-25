@@ -8,9 +8,9 @@ const report = require('../module/report')
 
 /* 举报文章 */
 router.post('/reportArticle', report.reportArticle)
-/* 获取举报文章列表 */
-router.post('/getRejectArticleList', report.getRejectArticleList)
 /* 获取举报详情 */
 router.post('/getRejectReasonList', report.getRejectReasonList)
+/* 处理举报文章 */
+router.post('/handleRejectReasonList', report.handleRejectReasonList)
 
 module.exports = router
