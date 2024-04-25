@@ -11,5 +11,7 @@ const comments = require('../module/comments')
 router.post('/reqComments', comments.reqComments)
 /* 获取评论 */
 router.post('/getComments', comments.getComments)
+/* 删除评论 */
+router.post('/deleteComments', comments.deleteComments)
 
 module.exports = router

@@ -70,3 +70,23 @@ exports.getComments = (req, res) => {
             });
         });
 }
+
+/**
+ * 删除评论
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.deleteComments = (req, res) => {
+    knex('comments_table').update({
+        is_deleted: 1
+    }).where({
+        id: req.body.id
+    }).then(rows => {
+        res.send({
+            code: 200,
+            message: '删除评论成功'
+        })
+    }).catch(err => {
+        res.error(err, 500)
+    })
+}

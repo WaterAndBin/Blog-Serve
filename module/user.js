@@ -157,3 +157,42 @@ exports.getMyInfo = (req, res) => {
             res.error(`${req.path} 数据库出错`, 500)
         });
 }
+
+/**
+ * 添加用户
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.addNewUser = (req, res) => {
+    const {
+        account,
+        password,
+        role_id,
+        user_name
+    } = req.body
+
+    /* 检查是否有重复的账号 */
+    knex('user_table') // 请替换为你的表名  
+        .select('account')
+        .where('account', account)
+        .then(rows => {
+            // 如果 rows 有内容，说明有重复的 account  
+            if (rows.length > 0) {
+                res.error('已存在相同的账号', 201)
+            } else {
+                /* 设置需要插入的元素 */
+                const insertState = {
+                    user_name: user_name, // 用户姓名
+                    account: account, // 账号
+                    password: bcrypt.hashSync(String(password), 10), // 加密密码
+                    role_id: role_id, // 角色id
+                    created_time: getFullTime() // 创建时间
+                }
+                insertData(req, res, 'user_table', insertState, '添加成功')
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            res.error(`${req.path} 数据库出错`, 500)
+        });
+}
