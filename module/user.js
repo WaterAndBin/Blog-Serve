@@ -58,8 +58,12 @@ exports.login = (req, res) => {
             }
         })
         .catch(error => {
-            console.log(error)
-            res.error(`${req.path} 数据库出错`, 500)
+            // console.log(error)
+            // res.error(`${req.path} 数据库出错`, 500)
+            res.send({
+                code: 202,
+                message: '该用户不存在'
+            })
         });
 }
 
